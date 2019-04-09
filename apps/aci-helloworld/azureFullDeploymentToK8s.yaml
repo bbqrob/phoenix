@@ -1,0 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: helloacrtasks:v1
+spec:
+  selector:
+    app: helloacrtasks:v1
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 80
+------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloacrtasks
+  labels:
+    app: helloacrtasks
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: helloacrtasks
+  template:
+    metadata:
+      labels:
+        app: helloacrtasks
+    spec:
+      containers:
+      - name: aci-helloworld
+        image: robsreg.azurecr.io/helloacrtasks:v1
+        ports:
+        - containerPort: 80
